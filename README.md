@@ -12,7 +12,7 @@
 
 Empirical demonstration of the equivalence of the standard and recursive functions of _μ_ and _σ_.
 
-## GitHub: [Practice 1](https://github.com/dayan3847/bayes_estimator/tree/main/practice1) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dayan3847/bayes_estimator/blob/master/practice1/practice1.ipynb)
+## GitHub: [Practice 1](https://github.com/dayan3847/bayes_estimator/tree/main/practice1-mu_experiment) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dayan3847/bayes_estimator/blob/master/practice1-mu_experiment/practice1.ipynb)
 
 ## Steps:
 
@@ -25,17 +25,17 @@ Empirical demonstration of the equivalence of the standard and recursive functio
 
 ## Results
 
-<img src="./practice1/img/r.png" alt="h" width="1489">
+<img src="./practice1-mu_experiment/img/r.png" alt="h" width="1489">
 
 # Practice 2: Analytical demonstration of _μ_ iterative and recursive.
 
 Analytical demonstration of the equivalence of the iterative and recursive functions of _μ_.
 
-## PDF Doc: [Practice 2](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice2/practice2.pdf)
+## PDF Doc: [Practice 2](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice2-mu_demonstration/practice2.pdf)
 
 ## Preview:
 
-<img src="./practice2/src/img/preview20.png" alt="h" width="1279">
+<img src="./practice2-mu_demonstration/src/img/preview20.png" alt="h" width="1279">
 
 ## Conclusion:
 
@@ -54,7 +54,7 @@ Present the following topics:
 * Expected Value
 * Conditional Probability
 
-## PDF Presentation: [Practice 3](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3/practice3.pdf)
+## PDF Presentation: [Practice 3](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3-ppt_concepts/practice3.pdf)
 
 # Practice 5:
 
