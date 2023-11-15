@@ -42,7 +42,7 @@ Analytical demonstration of the equivalence of the iterative and recursive funct
 It has been demonstrated using the method of mathematical induction.
 We have shown that if the formulas are equivalent for _n = k_, then they are also equivalent for _n = k + 1_.
 Since we have already shown that they are equivalent for _n = 1_ (base step),
-we can conclude that the iterative and recursive formulas for calculating $\mu$ are equivalent for any value of $n$,
+we can conclude that the iterative and recursive formulas for calculating $\mu$ are equivalent for any value of n,
 therefore, they are equally valid.
 
 # Practice 3: Expected Value and Conditional Probability
@@ -55,3 +55,9 @@ Present the following topics:
 * Conditional Probability
 
 ## PDF Presentation: [Practice 3](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3/practice3.pdf)
+
+# Practice 5:
+
+*The documentation and code is found in the following repository*
+
+## https://github.com/dayan3847/KalmanFilterBallTracking
