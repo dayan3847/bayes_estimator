@@ -1,6 +1,7 @@
 import numpy as np
 
 from src.kf.KalmanFilter import KalmanFilter
+from MouseTracker import MouseTracker
 
 
 class KalmanFilterMouseXV(KalmanFilter):
@@ -19,69 +20,26 @@ class KalmanFilterMouseXV(KalmanFilter):
             ]
         )
 
-    def predict(self, dt: int = 0):
-        self.Xp = self.A @ self.X
-        self.Pp = self.A @ self.P @ self.A.T + self.Q
-
     def init_X(self):
         x = self.Z[0]
         y = self.Z[1]
-        self.X = np.array(
-            [
-                [x],  # x
-                [y],  # y
-                [0],  # dx
-                [0],  # dy
-            ]
-        )
+        self.X = np.array([
+            x,  # x
+            y,  # y
+            0,  # dx
+            0,  # dy
+        ])
 
 
 if __name__ == '__main__':
-    kf = KalmanFilterMouseXV(1 / 60)
-    kf.Z = np.array([0, 0, 0, 0], dtype=np.float32)
+    window_name: str = 'Mouse Tracker [Position,Velocity]'
+
+    # delta time
+    dt: float = 1 / 60
+    kf = KalmanFilterMouseXV(dt)
+    # Measurement
+    kf.Z = np.array([0, 0, 0, 0])
     kf.init_X()
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
-    kf.Z = np.array([1, 1, 0, 0], dtype=np.float32)
-    kf.correct()
-    print(kf.X)
-    print(kf.P)
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
-    kf.Z = np.array([2, 2, 0, 0], dtype=np.float32)
-    kf.correct()
-    print(kf.X)
-    print(kf.P)
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
-    kf.Z = np.array([3, 3, 0, 0], dtype=np.float32)
-    kf.correct()
-    print(kf.X)
-    print(kf.P)
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
-    kf.Z = np.array([4, 4, 0, 0], dtype=np.float32)
-    kf.correct()
-    print(kf.X)
-    print(kf.P)
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
-    kf.Z = np.array([5, 5, 0, 0], dtype=np.float32)
-    kf.correct()
-    print(kf.X)
-    print(kf.P)
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
-    kf.Z = np.array([6, 6, 0, 0], dtype=np.float32)
-    kf.correct()
-    print(kf.X)
-    print(kf.P)
-    kf.predict(1)
-    print(kf.X)
-    print(kf.P)
+
+    tracker = MouseTracker(kf, dt, window_name)
+    tracker.run()

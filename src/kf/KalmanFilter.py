@@ -30,12 +30,12 @@ class KalmanFilter:
         self.Z: np.array = None
         self.h: np.array = None
 
-    def predict(self, dt: int):
+    def predict(self, dt: int = 1):
         self.update_A(dt)
         self.Xp = self.A @ self.X
         self.Pp = self.A @ self.P @ self.A.T + self.Q
 
-    def predict_correct(self, dt: int):
+    def predict_correct(self, dt: int = 1):
         self.predict(dt)
         self.correct()
 

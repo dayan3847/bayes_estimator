@@ -16,5 +16,5 @@ class KalmanFilterExtendedImplicit(KalmanFilterExtended):
         self.R = self.J @ self.R @ self.J.T
         self.update_K()
         self.X = self.Xp + self.K @ (-self.h)
-        I = np.identity(6, dtype=np.float32)
+        I = np.identity(self.x_size, dtype=np.float32)
         self.P = (I - self.K @ self.H) @ self.Pp
