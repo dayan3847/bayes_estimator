@@ -37,14 +37,14 @@ class MouseTracker:
 
     def draw_points(self):
         # Clear image
-        img = np.zeros((600, 800, 3), dtype=np.uint8)
+        self.img = np.zeros((600, 800, 3), dtype=np.uint8)
         # Draw points
         for points, color in zip([self.points_Z, self.points_X], [(0, 0, 255), (255, 0, 0)]):
             for i in range(1, len(points)):
-                cv2.line(img, points[i - 1], points[i], color, 1, cv2.LINE_AA, 0)
+                cv2.line(self.img, points[i - 1], points[i], color, 1, cv2.LINE_AA, 0)
 
         # Show image
-        cv2.imshow(self.window_name, img)
+        cv2.imshow(self.window_name, self.img)
 
     def run(self):
         cv2.namedWindow(self.window_name)
@@ -64,5 +64,8 @@ class MouseTracker:
             time.sleep(self.dt)
             # q to exit
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                # save last frame
+                cv2.imwrite('last_frame.png', self.img)
+
                 running = False
         cv2.destroyAllWindows()
