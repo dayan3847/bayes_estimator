@@ -4,8 +4,11 @@ from src.kf.KalmanFilterExtended import KalmanFilterExtended
 
 
 class KalmanFilterExtendedImplicit(KalmanFilterExtended):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,
+                 x_size: int,
+                 z_size: int,
+                 ):
+        super().__init__(x_size, z_size)
         self.J: np.array = np.array([])  # Jacobian matrix h respecto a Z
 
     def correct(self):
