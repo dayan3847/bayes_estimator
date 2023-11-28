@@ -2,96 +2,70 @@ import numpy as np
 import cv2
 import time
 
+from src.kf.KalmanFilter import KalmanFilter
+
 
 class MouseTracker:
+    def __init__(self, kf: KalmanFilter, dt: float, window_name: str, degree=1):
+        self.kf: KalmanFilter = kf
+        self.dt: float = dt
+        self.window_name: str = window_name
+        self.degree: int = degree
 
-    def __init__(self):
-        self.window_name: str = 'Mouse Tracker'
-        self.img = np.zeros((600, 800, 3), dtype=np.uint8)
-        self.running: bool = False
-        # Measurement
-        self.z: np.array = np.array([0, 0], dtype=np.float32)
-        # Vector of points Measurements
-        self.points: np.ndarray = np.array([self.z.astype(np.int32)], dtype=np.int32)
-        # Vector of points Kalman
-        self.points_kalman: np.ndarray = np.array([self.z.astype(np.int32)], dtype=np.int32)
-        cv2.namedWindow(self.window_name)
-        cv2.setMouseCallback(self.window_name, self.mouse_callback)
-
-        # delta time in milliseconds and seconds.
-        # dtm: float = 10
-        # dts: float = dtm * 10e-3
-        self.dt: float = 1 / 60
-
-        # KalmanFilter
-        self.kalman = cv2.KalmanFilter(4, 2)
-
-        # Transition Matrix
-        self.kalman.transitionMatrix = np.array(
-            [
-                [1, 0, self.dt, 0],
-                [0, 1, 0, self.dt],
-                [0, 0, 1, 0],
-                [0, 0, 0, 1],
-            ],
-            dtype=np.float32)
-        # measurementMatrix
-        self.kalman.measurementMatrix = np.array([
-            [1, 0, 0, 0],
-            [0, 1, 0, 0]
-        ], dtype=np.float32)
-        # statePre
-        self.kalman.statePre = np.array(
-            [
-                [0],  # x
-                [0],  # y
-                [0],  # dx
-                [0],  # dy
-            ],
-            dtype=np.float32)
-        # errorCovPre
-        self.kalman.errorCovPre = np.eye(4, dtype=np.float32)
-        # processNoiseCov
-        self.kalman.processNoiseCov = np.identity(4, dtype=np.float32) * 1e-4
-        # measurementNoiseCov
-        self.kalman.measurementNoiseCov = np.identity(2, dtype=np.float32) * 10
-        # errorCovPost
-        self.kalman.errorCovPost = np.identity(4, dtype=np.float32) * .1
+        self.points_Z: list[tuple[int, int]] = [(int(kf.Z[0]), int(kf.Z[1])), (int(kf.Z[0]), int(kf.Z[1]))]
+        self.points_X: list[tuple[int, int]] = [(int(kf.X[0]), int(kf.X[1]))]
 
     def mouse_callback(self, event: int, x: int, y: int, flags: int, param) -> None:
         if event == cv2.EVENT_MOUSEMOVE:
-            self.z = np.array([x, y], dtype=np.float32)
+            point_Z_k_1 = self.points_Z[-1]
+            dx = (x - point_Z_k_1[0])
+            xp = dx / self.dt
+            dy = (y - point_Z_k_1[1])
+            yp = dy / self.dt
+            new_Z = [x, y, xp, yp]
+            if self.degree == 2:
+                point_Z_k_2 = self.points_Z[-2]
+                ddx = (dx - (point_Z_k_1[0] - point_Z_k_2[0])) / self.dt
+                ddy = (dy - (point_Z_k_1[1] - point_Z_k_2[1])) / self.dt
+                new_Z.append(ddx)
+                new_Z.append(ddy)
 
-    def run(self) -> None:
-        self.running = True
-        while self.running:
-            # Predict
-            prediction: np.ndarray = self.kalman.predict()
-            # Correct
-            self.kalman.correct(self.z)
-            # Get the estimated position
-            estimated_position: np.ndarray = prediction.T[0][:2].astype(np.int32)
-            estimated_position_: np.ndarray = self.kalman.statePost.T[0][:2].astype(np.int32)
+            self.kf.Z = np.array(new_Z)
+            new_point_Z = (int(self.kf.Z[0]), int(self.kf.Z[1]))
+            if not np.array_equal(point_Z_k_1, new_point_Z):
+                self.points_Z.append(new_point_Z)
 
-            self.points = np.append(self.points, [self.z.astype(np.int32)], axis=0)
-            self.points_kalman = np.append(self.points_kalman, [estimated_position], axis=0)
+    def draw_points(self):
+        # Clear image
+        self.img = np.zeros((600, 800, 3), dtype=np.uint8)
+        # Draw points
+        for points, color in zip([self.points_Z, self.points_X], [(0, 0, 255), (255, 0, 0)]):
+            for i in range(1, len(points)):
+                cv2.line(self.img, points[i - 1], points[i], color, 1, cv2.LINE_AA, 0)
 
-            # Draw
-            if not np.array_equal(self.points[-2], self.points[-1]):
-                cv2.line(self.img, self.points[-2], self.points[-1], (0, 0, 255), 1, cv2.LINE_AA, 0)
-            if not np.array_equal(self.points_kalman[-2], self.points_kalman[-1]):
-                cv2.line(self.img, self.points_kalman[-2], self.points_kalman[-1], (255, 0, 0), 1, cv2.LINE_AA, 0)
+        # Show image
+        cv2.imshow(self.window_name, self.img)
 
-            # Show image
-            cv2.imshow(self.window_name, self.img)
+    def run(self):
+        cv2.namedWindow(self.window_name)
+        cv2.setMouseCallback(self.window_name, self.mouse_callback)
+
+        running: bool = True
+        while running:
+            self.kf.predict_correct()
+
+            new_point_X = (int(self.kf.X[0]), int(self.kf.X[1]))
+            if not np.array_equal(self.points_X[-1], new_point_X):
+                self.points_X.append(new_point_X)
+
+            self.draw_points()
+
             # sleep
             time.sleep(self.dt)
             # q to exit
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                self.running = False
+                # save last frame
+                cv2.imwrite('last_frame.png', self.img)
+
+                running = False
         cv2.destroyAllWindows()
-
-
-if __name__ == '__main__':
-    mt: MouseTracker = MouseTracker()
-    mt.run()
