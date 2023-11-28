@@ -45,16 +45,14 @@ Since we have already shown that they are equivalent for _n = 1_ (base step),
 we can conclude that the iterative and recursive formulas for calculating $\mu$ are equivalent for any value of n,
 therefore, they are equally valid.
 
-# Practice 3: Expected Value and Conditional Probability
+# Practice 3: Presentation of concepts
 
-## Instructions:
-
-Present the following topics:
+## Concepts:
 
 * Expected Value
 * Conditional Probability
 
-## PDF Presentation: [Practice 3](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3-ppt_concepts/practice3.pdf)
+## [PDF Presentation](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3-ppt_concepts/practice3.pdf)
 
 # Practice 5:
 
