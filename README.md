@@ -54,7 +54,7 @@ therefore, they are equally valid.
 
 ## [PDF Presentation](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3-ppt_concepts/practice3.pdf)
 
-# Practice 4: Mouse Tracking with Kalman filter
+# Practice 4: Mouse Tracking with Kalman Filter
 
 Manual implementation of a Kalman filter for Mouse Tracking *without using the OpenCV KalmanFilter class*.
 
@@ -66,7 +66,7 @@ Manual implementation of a Kalman filter for Mouse Tracking *without using the O
 
 <img src="./practice4-kf_mouse/example/exPVA.png" alt="h" width="400">
 
-# Practice 5: Ball Tracking with Kalman filter
+# Practice 5: Ball Tracking with Kalman Filter
 
 *The documentation and code is found in the following repository*
 
