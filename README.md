@@ -54,7 +54,7 @@ therefore, they are equally valid.
 
 ## [PDF Presentation](https://raw.githubusercontent.com/dayan3847/bayes_estimator/main/practice3-ppt_concepts/practice3.pdf)
 
-# Practice 5:
+# Practice 5: Ball tracking with Kalman filter
 
 *The documentation and code is found in the following repository*
 
